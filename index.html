@@ -44,7 +44,7 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid #1e3352}
 <main>
 
   <h1>Starward Overlay</h1>
-  <p class="small">星の翼の配信者向け・非公式・無料　／　版 0.2.0</p>
+  <p class="small">星の翼の配信者向け・非公式・無料　／　版 0.2.1</p>
 
   <p>星の翼の配信に重ねる、OBS 用のオーバーレイです。ランク・ランクポイント・今日の勝敗と勝率・デッキ 4 体を、配信画面に表示します。上位 100 位に入っているときは、順位入りの勲章で表示します。</p>
   <div class="sample"><img src="assets/overlay_all_minimal.png" alt="表示の例。ランクのアイコン、ランクポイント、勝敗と勝率、デッキ 4 体"></div>
@@ -54,8 +54,8 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid #1e3352}
   <p><a class="btn" id="dl-btn" aria-disabled="true" href="#download">公開の準備中です</a></p>
   <p class="small" id="dl-note">ダウンロードは、まだ始まっていません。</p>
   <dl>
-    <dt>ファイル</dt><dd>StarwardOverlay-0.2.0.zip（129,922,532 バイト・約 130MB）</dd>
-    <dt>SHA-256</dt><dd class="hash">7a13f3c9d8abf6df22917f008e48739fc9e31f564596ce8763f0cb14d4b4512f</dd>
+    <dt>ファイル</dt><dd>StarwardOverlay-0.2.1.zip（129,922,798 バイト・約 130MB）</dd>
+    <dt>SHA-256</dt><dd class="hash">f948548b177cb6be667a9ac7e6ed0816eb79d75fe76b6b5327756af0b1c79ada</dd>
     <dt>確認している環境</dt><dd>Windows 11（開発者の PC）。Windows 10 では確かめていません。</dd>
     <dt>必要なもの</dt><dd>OBS Studio。公式戦績サイトとの連携には、Microsoft Edge WebView2 ランタイム（Windows 11 には最初から入っています）。</dd>
   </dl>
@@ -124,7 +124,7 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid #1e3352}
 
 <script>
 // ── 公開のときに埋める所（空のあいだは「準備中」と表示する。実体のないリンクは作らない）──
-var DOWNLOAD_URL  = 'https://github.com/longcape/starward-overlay/releases/download/v0.2.0/StarwardOverlay-0.2.0.zip';   // 例: 'https://github.com/<アカウント>/<リポジトリ>/releases/download/v0.2.0/StarwardOverlay-0.2.0.zip'
+var DOWNLOAD_URL  = 'https://github.com/longcape/starward-overlay/releases/download/v0.2.1/StarwardOverlay-0.2.1.zip';   // 例: 'https://github.com/<アカウント>/<リポジトリ>/releases/download/v0.2.1/StarwardOverlay-0.2.1.zip'
 var CONTACT_URL   = 'https://x.com/shizuo_lcesp';   // 問い合わせ・不具合の受け口の URL
 var CONTACT_LABEL = 'X（@shizuo_lcesp）';
 var PROMO_VIDEO_ID = '';  // YouTube の動画 ID（紹介）
@@ -135,7 +135,7 @@ var GUIDE_VIDEO_ID = '';  // YouTube の動画 ID（導入方法）
     var b = document.getElementById('dl-btn');
     b.href = DOWNLOAD_URL;
     b.removeAttribute('aria-disabled');
-    b.textContent = 'StarwardOverlay-0.2.0.zip をダウンロード';
+    b.textContent = 'StarwardOverlay-0.2.1.zip をダウンロード';
     document.getElementById('dl-note').textContent = 'ブラウザが確認を出すことがあります。入手元がこのページであることを確かめたうえで、保存を選んでください。';
   } else {
     document.getElementById('dl-btn').addEventListener('click', function (e) { e.preventDefault(); });
