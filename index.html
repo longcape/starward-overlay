@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starward Overlay — 星の翼の配信用オーバーレイ（非公式・無料）</title>
+<meta name="description" content="星の翼の配信画面に、ランク・ランクポイント・今日の勝敗・デッキ 4 体を表示する、OBS 用の無料ツール（非公式）の配布ページ。">
+<meta property="og:title" content="Starward Overlay">
+<meta property="og:description" content="星の翼の配信用オーバーレイ（非公式・無料）の配布ページ">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:,">
+<style>
+body{margin:0;background:#04070d;color:#eaf2fb;line-height:1.9;font-size:16px;
+  font-family:"BIZ UDPGothic","Yu Gothic UI","Hiragino Sans","Noto Sans JP",Meiryo,sans-serif}
+main{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+a{color:#2bb8c4}
+img{max-width:100%;height:auto;display:block}
+h1{font-size:26px;margin:0 0 6px}
+h2{font-size:20px;margin:44px 0 10px;padding-top:18px;border-top:1px solid #1e3352}
+h3{font-size:16px;margin:22px 0 2px}
+p,li,dd{color:#c3d1e3}
+p{margin:0 0 12px}
+ol,ul{margin:0 0 12px;padding-left:1.4em}
+li{margin-bottom:10px}
+li b,p b{color:#eaf2fb}
+code{font-family:Consolas,"BIZ UDGothic",monospace;background:#07101e;border:1px solid #1e3352;border-radius:6px;padding:1px 7px;font-size:.92em}
+pre{font-family:Consolas,"BIZ UDGothic",monospace;background:#07101e;border:1px solid #1e3352;border-radius:8px;padding:12px 14px;overflow-x:auto;font-size:14px;margin:0 0 12px}
+.small{font-size:13px;color:#9db0c8}
+.sample{background:linear-gradient(160deg,#17233f,#231848);border:1px solid #1e3352;border-radius:10px;padding:18px;margin:16px 0 4px}
+.sample img{width:420px}
+.shot{border:1px solid #1e3352;border-radius:8px;margin:8px 0 4px}
+.btn{display:inline-block;background:#2bb8c4;color:#04121a;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:8px;font-size:17px}
+.btn[aria-disabled="true"]{background:#24364f;color:#8fa3bd;cursor:not-allowed}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 18px;margin:16px 0 12px;font-size:15px}
+dt{color:#9db0c8}
+dd{margin:0;overflow-wrap:anywhere}
+.hash{font-family:Consolas,monospace;font-size:14px}
+[hidden]{display:none!important}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid #1e3352}
+@media (max-width:560px){dl{grid-template-columns:1fr}dt{margin-top:8px}}
+</style>
+</head>
+<body>
+<main>
+
+  <h1>Starward Overlay</h1>
+  <p class="small">星の翼の配信者向け・非公式・無料　／　版 0.2.0</p>
+
+  <p>星の翼の配信に重ねる、OBS 用のオーバーレイです。ランク・ランクポイント・今日の勝敗と勝率・デッキ 4 体を、配信画面に表示します。上位 100 位に入っているときは、順位入りの勲章で表示します。</p>
+  <div class="sample"><img src="assets/overlay_all_minimal.png" alt="表示の例。ランクのアイコン、ランクポイント、勝敗と勝率、デッキ 4 体"></div>
+  <p class="small">表示の例（数字は見本です）。テーマ・フォント・アイコンの形などは、設定画面で変えられます。</p>
+
+  <h2 id="download">ダウンロード</h2>
+  <p><a class="btn" id="dl-btn" aria-disabled="true" href="#download">公開の準備中です</a></p>
+  <p class="small" id="dl-note">ダウンロードは、まだ始まっていません。</p>
+  <dl>
+    <dt>ファイル</dt><dd>StarwardOverlay-0.2.0.zip（129,922,532 バイト・約 130MB）</dd>
+    <dt>SHA-256</dt><dd class="hash">7a13f3c9d8abf6df22917f008e48739fc9e31f564596ce8763f0cb14d4b4512f</dd>
+    <dt>確認している環境</dt><dd>Windows 11（開発者の PC）。Windows 10 では確かめていません。</dd>
+    <dt>必要なもの</dt><dd>OBS Studio。公式戦績サイトとの連携には、Microsoft Edge WebView2 ランタイム（Windows 11 には最初から入っています）。</dd>
+  </dl>
+  <p class="small">上の SHA-256 の ZIP は、Windows Defender と ClamAV で検査し、どちらも検出はありませんでした（2026 年 10 月 13 日）。検出が無いことは、安全の証明ではありません。</p>
+
+  <div id="videos" hidden>
+    <h2>動画</h2>
+    <ul>
+      <li id="video-promo" hidden><a rel="noopener">紹介の動画</a></li>
+      <li id="video-guide" hidden><a rel="noopener">導入方法の動画（はじめての方向け）</a></li>
+    </ul>
+  </div>
+
+  <h2 id="guide">入れ方</h2>
+  <p>インストーラーはありません。Python なども要りません。</p>
+  <ol>
+    <li><b>ZIP を展開する。</b>ダウンロードした ZIP を右クリック →「すべて展開」を選びます。展開先は、どこでもかまいません。ZIP を開いただけの状態では動きません。</li>
+    <li><b><code>StarwardOverlay.exe</code> をダブルクリックする。</b>画面の右下（タスクトレイ）にアイコンが出て、ブラウザに設定画面が開きます。次からも、同じファイルをダブルクリックします。<br>
+      同じフォルダの <code>Start Overlay.bat</code> は、Windows の設定によっては止められます。<code>StarwardOverlay.exe</code> のほうを使ってください。</li>
+    <li><b>URL を、OBS の「ブラウザ」ソースに貼る。</b>設定画面のいちばん上「OBS に貼る URL」の「コピー」を押します（まずは「一体型」）。OBS の「ソース」の「＋」→「ブラウザ」→「新規作成」を選び、URL の欄に貼ります。幅 620・高さ 400 が目安で、背景は透明です。<br>
+      ランク・戦績・デッキを別々に置くときは、ブラウザソースを 1 つずつ「新規作成」してください。「既存を追加」で増やしたソースは、OBS の中では同じ 1 つのソースなので、URL を変えると全部が同じ表示に変わります。
+      <img class="shot" src="assets/settings_url.png" alt="設定画面の「OBS に貼る URL」の欄" loading="lazy"></li>
+    <li><b>公式戦績サイトと連携する（初回だけ）。</b>星の翼を起動してから、設定画面の「公式戦績サイトを開く（ログイン）」を押します。出てきた公式戦績サイトのウィンドウで、いつもどおり UID を入れ、ゲーム内メールに届く認証コードで連携します。<br>
+      このアプリ専用のブラウザを使うので、Chrome などで連携済みでも、ここでもう一度連携が要ります。連携しなくても、ゲーム画面の読み取りだけで動きます（ゲームは、ボーダーレスかウィンドウ表示にしてください）。
+      <img class="shot" src="assets/settings_official.png" alt="設定画面の「公式戦績サイトとの連携」の欄（数字は見本）" loading="lazy"></li>
+    <li><b>デッキ 4 体を選ぶ。</b>デッキは、自動では入りません。設定画面の「デッキ（4 体を選ぶ）」で、入れたい枠を押してから、下の一覧のキャラクターを押します。選ぶたびに保存され、OBS にすぐ反映されます。
+      <img class="shot" src="assets/settings_deck_top.png" alt="設定画面の「デッキ（4 体を選ぶ）」の欄" loading="lazy"></li>
+  </ol>
+  <p>終了するときは、タスクトレイのアイコンを右クリックして「終了」を選びます。くわしい説明は、ZIP の中の <code>README.txt</code> にあります。</p>
+
+  <h2 id="notice">使う前に読んでください</h2>
+  <ul>
+    <li><b>非公式のツールです。</b>星の翼の運営・開発元が作成・提供・保証するものではありません。</li>
+    <li><b>作者の電子署名は、付いていません。</b><code>StarwardOverlay.exe</code> は、python.org が配っている Python の起動用プログラムを、名前だけ変えて置いたものです。プロパティに出る署名「Python Software Foundation」は、Python の起動用プログラムが本物であることを示すだけで、このアプリの内容を確かめた・保証した、という意味ではありません。アプリ本体は <code>app</code> フォルダの中の、中身を読めるプログラムです。</li>
+    <li><b>UID・認証コードを、アプリは受け取りません。</b>入力するのは、公式戦績サイトの画面だけです。アプリは、ログインしたあとの画面に表示された数字だけを、あなたの PC の中で読みます。設定・戦績・ログイン状態は PC の中だけに保存し、外部へは送りません。</li>
+    <li><b>Windows のセキュリティの設定は、切らないでください。</b>スマート アプリ コントロール・ウイルス対策・SmartScreen を切ったり、このアプリを除外に入れたりする必要はありません。止められたときは、無理に動かさず、出た文面を控えてお知らせください。</li>
+    <li><b>表示に使っている画像について。</b>ランクのアイコンやキャラクターの絵など、表示に使っているゲームの画像の権利は、それぞれの権利者にあります。上位 100 位の勲章は、ゲームのランキング画面から切り出したものです。</li>
+    <li><b>保存先のフォルダを、人に渡さないでください。</b><code>%LOCALAPPDATA%\LongCapeStarwardOverlay</code> には、公式戦績サイトのログイン状態が入っています。</li>
+  </ul>
+  <p><a href="terms.html">利用条件</a>　／　<span id="contact-line">お問い合わせ先: 準備中</span></p>
+
+  <h2 id="faq">うまくいかないとき</h2>
+  <h3>何も起きない・設定画面が開かない</h3>
+  <p>ブラウザで <code>http://127.0.0.1:17890/settings</code> を開いてみてください。開けば起動しています。開かないときは、ZIP を「すべて展開」したかを確かめ、フォルダを日本語や記号を含まない短い場所（例: <code>C:\StarwardOverlay</code>）へ移して、もう一度試してください。</p>
+  <h3>Windows の確認や警告が出る・止められる</h3>
+  <p>Windows が、インターネットから受け取ったファイルに対して出す確認です。入手元がこのページであることを確かめてください。<code>Start Overlay.bat</code> が止められたときは、<code>StarwardOverlay.exe</code> のほうを使ってください。それでも止められる場合は、無理に動かさないでください。</p>
+  <h3>OBS に何も出ない</h3>
+  <p>アプリより先に OBS を起動すると、表示が空のままになることがあります。OBS でブラウザソースを右クリック →「現在のページを再読込」を押してください。</p>
+  <h3>ランクやランクポイントが出ない</h3>
+  <p>公式戦績サイトと連携していると、起動のとき・試合のあとに自動で入ります。連携していないときは、試合のあとのリザルト画面から読み取ります。「公式戦績サイトにログインしてください」と出たときは、連携が切れているので、もう一度ログインします。</p>
+  <h3>順位が出ない</h3>
+  <p>順位は、上位 100 位に入っているときだけ表示します。</p>
+  <h3>デッキが出ない・違う</h3>
+  <p>設定画面の「デッキ（4 体を選ぶ）」で選びます。自動では入りません。</p>
+  <h3>勝敗やランクが違う</h3>
+  <p>設定画面の「戦績」「ランクの訂正」で直せます。手で直した値は、元に戻せます。</p>
+  <h3>やめるとき（アンインストール）</h3>
+  <p>タスクトレイのアイコンを右クリックして「終了」を選び、展開したフォルダを消します。設定と戦績も消すときは、<code>%LOCALAPPDATA%\LongCapeStarwardOverlay</code> フォルダも消します。レジストリやスタートアップには、何も書き込みません。</p>
+
+  <footer>
+    <p class="small">Starward Overlay　Copyright © 2026 静雄. All rights reserved.<br>
+    このツールは非公式のもので、「星の翼」の運営・開発元とは関係ありません。「星の翼」およびゲーム内の名称・画像の権利は、それぞれの権利者にあります。<br>
+    このツールは Python Software Foundation とは関係ありません。同梱しているソフトウェアは、それぞれのライセンスに従います（ZIP の中の <code>licenses</code> フォルダ）。</p>
+  </footer>
+</main>
+
+<script>
+// ── 公開のときに埋める所（空のあいだは「準備中」と表示する。実体のないリンクは作らない）──
+var DOWNLOAD_URL  = '';   // 例: 'https://github.com/<アカウント>/<リポジトリ>/releases/download/v0.2.0/StarwardOverlay-0.2.0.zip'
+var CONTACT_URL   = 'https://x.com/shizuo_lcesp';   // 問い合わせ・不具合の受け口の URL
+var CONTACT_LABEL = 'X（@shizuo_lcesp）';
+var PROMO_VIDEO_ID = '';  // YouTube の動画 ID（紹介）
+var GUIDE_VIDEO_ID = '';  // YouTube の動画 ID（導入方法）
+
+(function () {
+  if (DOWNLOAD_URL) {
+    var b = document.getElementById('dl-btn');
+    b.href = DOWNLOAD_URL;
+    b.removeAttribute('aria-disabled');
+    b.textContent = 'StarwardOverlay-0.2.0.zip をダウンロード';
+    document.getElementById('dl-note').textContent = 'ブラウザが確認を出すことがあります。入手元がこのページであることを確かめたうえで、保存を選んでください。';
+  } else {
+    document.getElementById('dl-btn').addEventListener('click', function (e) { e.preventDefault(); });
+  }
+  if (CONTACT_URL) {
+    var c = document.getElementById('contact-line');
+    c.textContent = 'お問い合わせ・不具合の連絡: ';
+    var a = document.createElement('a');
+    a.href = CONTACT_URL; a.rel = 'noopener'; a.textContent = CONTACT_LABEL || CONTACT_URL;
+    c.appendChild(a);
+  }
+  var shown = false;
+  [['video-promo', PROMO_VIDEO_ID], ['video-guide', GUIDE_VIDEO_ID]].forEach(function (v) {
+    if (!v[1]) return;
+    var li = document.getElementById(v[0]);
+    li.querySelector('a').href = 'https://www.youtube.com/watch?v=' + encodeURIComponent(v[1]);
+    li.hidden = false; shown = true;
+  });
+  if (shown) document.getElementById('videos').hidden = false;
+})();
+</script>
+</body>
+</html>
